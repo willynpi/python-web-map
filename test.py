@@ -39,4 +39,10 @@ color = ['#66ccff','#3399ff','#0066ff','#0000ff','#000099','#000066']
 for lat,lon,hgt in zip(lat,lon,hgt):
     colorPick = floor(hgt/200)
     folium.RegularPolygonMarker([lat, lon, hgt], popup=str(hgt)+" m", number_of_sides=3,rotation=30,radius=15 ,color='#deebf7', fill_color=color[colorPick],fill_opacity=0.5).add_to(m)
+
+m.add_child(folium.GeoJson(data=(open("world.json", 'r',encoding='utf-8-sig')),
+                            style_function = lambda x : {'fillColor':'#ff9933' if x["properties"]["POP2005"] > 100000000
+                                                            else '#ffff99' if 1000000 <= x['properties']['POP2005'] <= 10000000
+                                                            else '#66ccff' } ))
+
 m.save('point.html')

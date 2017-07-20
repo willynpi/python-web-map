@@ -21,7 +21,8 @@ folium.Marker([45.3300, -121.6823], popup='Some Other Location',
 map_1.save('iconTest.html')
 
 ##altitude practice
-m = folium.Map(location=(25.044769, 121.537016), zoom_start=10, tiles='Stamen Terrain')
+m = folium.Map(location=(25.044769, 121.537016), zoom_start=10, tiles='Cartodb Positron')
+
 data = pandas.read_csv("example.txt")
 lat = list(data["LATITUDE"])
 lon = list(data["LONGITUDE"])
@@ -34,16 +35,8 @@ hgt = list(data["ALTITUDE"])
 #              {'coordinate':[24.293564,120.543978],'height':123},
 #              {'coordinate':[24.291568,120.575988],'height':653}
 # ]
-color = ['#e5f5f9','#99d8c9','#2ca25f']
-# for x in data_list:
-#     colorPick = floor(x['height']/250)
-#     if colorPick>2:
-#         colorPick = 2
-    # folium.CircleMarker((24.297985, 120.525100), popup='hi',radius=20,  color='#ff6699', fill_color='#ff6699').add_to(m)
+color = ['#66ccff','#3399ff','#0066ff','#0000ff','#000099','#000066']
 for lat,lon,hgt in zip(lat,lon,hgt):
-    colorPick = floor(hgt/250)
-    if colorPick>2:
-        colorPick = 2
-    folium.CircleMarker([lat, lon, hgt], popup=str(hgt), radius=10,color=color[colorPick], fill_color=color[colorPick]).add_to(m)
-
+    colorPick = floor(hgt/200)
+    folium.RegularPolygonMarker([lat, lon, hgt], popup=str(hgt)+" m", number_of_sides=3,rotation=30,radius=15 ,color='#deebf7', fill_color=color[colorPick],fill_opacity=0.5).add_to(m)
 m.save('point.html')

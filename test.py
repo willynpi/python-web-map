@@ -21,7 +21,7 @@ folium.Marker([45.3300, -121.6823], popup='Some Other Location',
 map_1.save('iconTest.html')
 
 ##altitude practice
-m = folium.Map(location=(25.044769, 121.537016), zoom_start=10, tiles='Cartodb Positron')
+m = folium.Map(location = [25.044769, 121.537016], zoom_start = 10, tiles = 'Cartodb Positron')
 
 data = pandas.read_csv("example.txt")
 lat = list(data["LATITUDE"])
@@ -36,13 +36,26 @@ hgt = list(data["ALTITUDE"])
 #              {'coordinate':[24.291568,120.575988],'height':653}
 # ]
 color = ['#66ccff','#3399ff','#0066ff','#0000ff','#000099','#000066']
+
+fgm = folium.FeatureGroup(name="Mountains")
 for lat,lon,hgt in zip(lat,lon,hgt):
     colorPick = floor(hgt/200)
-    folium.RegularPolygonMarker([lat, lon, hgt], popup=str(hgt)+" m", number_of_sides=3,rotation=30,radius=15 ,color='#deebf7', fill_color=color[colorPick],fill_opacity=0.5).add_to(m)
+    fgm.add_child(folium.RegularPolygonMarker(location = [lat, lon],
+                                popup = str(hgt)+" m",
+                                number_of_sides = 3,
+                                rotation = 30,
+                                radius = 15,
+                                color ='#deebf7',
+                                fill_color = color[colorPick],
+                                fill_opacity = 0.5))
+fgm.add_to(m)
 
-m.add_child(folium.GeoJson(data=(open("world.json", 'r',encoding='utf-8-sig')),
+fgp = folium.FeatureGroup(name="Population")
+fgp.add_child(folium.GeoJson(data =(open("world.json", 'r',encoding = 'utf-8-sig')),
                             style_function = lambda x : {'fillColor':'#ff9933' if x["properties"]["POP2005"] > 100000000
                                                             else '#ffff99' if 1000000 <= x['properties']['POP2005'] <= 10000000
                                                             else '#66ccff' } ))
+fgp.add_to(m)
 
+m.add_child(folium.LayerControl(position = 'topright'))
 m.save('point.html')

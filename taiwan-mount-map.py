@@ -3,7 +3,7 @@ import folium
 from math import floor
 
 mount_map = folium.Map([23.770876, 120.934757], zoom_start=8, tiles='Cartodb Positron')
-data = pandas.read_csv("mount-data.txt")
+data = pandas.read_csv("mount-data.txt", encoding="utf-8")
 lat = list(data["latitude"])
 lon = list(data["longitude"])
 hgt = list(data["altitude"])
@@ -15,7 +15,7 @@ for name,lat,lon,hgt in zip(name,lat,lon,hgt):
         colorPick = floor((hgt-3000)/300)+1
     else :
         colorPick = 0
-    html = "<div style=\"font-size:8px\"><p><strong>"+str(name)+ "</strong></p><p>"+str(hgt)+" m</p></div>"
+    html = "<div style=\"font-size:9px\"><p><strong>"+str(name)+ "</strong></p><p>"+str(hgt)+" m</p></div>"
     iframe = folium.IFrame(html = html, width=90, height=80)
     popup = folium.Popup(iframe, max_width=200)
     folium.RegularPolygonMarker([lat, lon, hgt],

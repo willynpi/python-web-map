@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
-import urllib
-# import pandas
+import urllib.request
 from pyproj import Proj
 
 request = urllib.request.urlopen('http://www.mountaineering.org.tw/tw/index.php/2015-09-13-14-48-49/2015-09-13-15-07-13').read()
